@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            RocalculatorTheme() {
+            RocalculatorTheme {
                 Calculator()
             }
         }
@@ -36,12 +36,23 @@ fun Calculator() {
     var display by remember { mutableStateOf("") }
     var firstValue by remember { mutableStateOf("")}
     var secondValue by remember { mutableStateOf("")}
-    val operator by remember { mutableStateOf("")}
-    val newoperation by remember { mutableStateOf(false)}
+    var operator by remember { mutableStateOf<String?>(null)}
+    var newCalculation by remember { mutableStateOf(false)}
 
+
+    fun onClear(){
+        display = ""
+        firstValue = ""
+        secondValue = ""
+        operator = ""
+        newCalculation = false
+    }
 
     fun getNumber(number: String) {
 
+        if(!newCalculation){
+            onClear()
+        }
 
         if (operator == null) {
             firstValue += number
@@ -52,7 +63,9 @@ fun Calculator() {
         }
     }
 
-    Column () {
+
+
+    Column {
 
         TextField(value = display, onValueChange = {}, readOnly = true)
 
@@ -89,7 +102,7 @@ fun Calculator() {
 
 
             Column {
-                Button(onClick = {}) { Text("ON/C") }
+                Button(onClick = {onClear()}) { Text("ON/C") }
                 Button(onClick = {}) { Text("CE") }
                 Button(onClick = {}) { Text("/") }
                 Button(onClick = {}) { Text("*") }
