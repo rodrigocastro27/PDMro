@@ -67,7 +67,7 @@ fun Calculator() {
         }
     }
 
- fun Calculate() {
+ fun calculate() {
         val num1 = firstValue.toDoubleOrNull()
         val num2 = secondValue.toDoubleOrNull()
 
@@ -120,7 +120,7 @@ fun Calculator() {
                 Button(onClick = {getNumber("9")}) { Text("9") }
                 Button(onClick = {getNumber("6")}) { Text("6") }
                 Button(onClick = {getNumber("3")}) { Text("3") }
-                Button(onClick = {}) { Text("=") }
+                Button(onClick = {calculate()}) { Text("=") }
             }
 
 
