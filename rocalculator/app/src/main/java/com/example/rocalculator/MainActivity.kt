@@ -17,6 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.rocalculator.ui.theme.RocalculatorTheme
+import kotlin.math.pow
 
 
 class MainActivity : ComponentActivity() {
@@ -40,7 +41,7 @@ fun Calculator() {
     var newCalculation by remember { mutableStateOf(false)}
 
 
-    fun onClear(){
+    fun completeClear(){
         display = ""
         firstValue = ""
         secondValue = ""
@@ -48,10 +49,13 @@ fun Calculator() {
         newCalculation = false
     }
 
+    fun clearLastValue(){
+
+    }
     fun getNumber(number: String) {
 
         if(!newCalculation){
-            onClear()
+            completeClear()
         }
 
         if (operator == null) {
@@ -63,6 +67,25 @@ fun Calculator() {
         }
     }
 
+ fun Calculate() {
+        val num1 = firstValue.toDoubleOrNull()
+        val num2 = secondValue.toDoubleOrNull()
+
+        if (num1 != null && operator != null) {
+            display = when (operator) {
+                "+" -> (num1 + (num2 ?: 0.0)).toString()
+                "-" -> (num1 - (num2 ?: 0.0)).toString()
+                "*" -> (num1 * (num2 ?: 1.0)).toString()
+                "/" -> if (num2 != null && num2 != 0.0) (num1 / num2).toString() else "Error"
+                "^" -> num1.pow(num2 ?: 1.0).toString()
+                else -> "Error"
+            }
+            firstValue = display
+            secondValue = ""
+            operator = null
+            newCalculation= true
+        }
+    }
 
 
     Column {
@@ -102,8 +125,8 @@ fun Calculator() {
 
 
             Column {
-                Button(onClick = {onClear()}) { Text("ON/C") }
-                Button(onClick = {}) { Text("CE") }
+                Button(onClick = {completeClear()}) { Text("ON/C") }
+                Button(onClick = {clearLastValue()}) { Text("CE") }
                 Button(onClick = {}) { Text("/") }
                 Button(onClick = {}) { Text("*") }
                 Button(onClick = {}) { Text("-") }
